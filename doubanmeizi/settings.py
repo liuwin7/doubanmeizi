@@ -16,8 +16,8 @@ NEWSPIDER_MODULE = 'doubanmeizi.spiders'
 
 # Images PIPELINES
 ITEM_PIPELINES = {
-    'scrapy.pipelines.images.ImagesPipeline': 1,
-    # 'doubanmeizi.pipelines.DoubanmeiziPipeline': 1,
+    # 'scrapy.pipelines.images.ImagesPipeline': 1,
+    'doubanmeizi.pipelines.DoubanmeiziPipeline': 1,
     }
 
 # ITEM_PIPELINES = ['scrapy.pipeline.images.ImagesPipeline',

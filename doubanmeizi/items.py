@@ -14,6 +14,7 @@ class DoubanmeiziItem(scrapy.Item):
     title = scrapy.Field()
     link = scrapy.Field()
     desc = scrapy.Field()
+    category = scrapy.Field()
 
     # images
     image_urls = scrapy.Field()

@@ -10,6 +10,8 @@ from scrapy.pipelines.images import ImagesPipeline
 from scrapy.exceptions import DropItem
 from scrapy.http import Request
 
+from ImageDatabaseItem import ImageDatabaseItem
+
 class DoubanmeiziPipeline(ImagesPipeline):
 
     def get_media_requests(self, item, info):
@@ -20,4 +22,10 @@ class DoubanmeiziPipeline(ImagesPipeline):
         image_paths = [x['path'] for ok, x in results if ok]
         if not image_paths:
             raise DropItem("Item contains no images")
+        image_name = item["title"]
+        image_items = [x for ok, x in results if ok]
+        for image_path_item in image_items:
+            image_url = image_path_item["url"]
+            image_path = image_path_item["path"]
+            image_checksum = image_path_item["checksum"]
         return item
