@@ -9,7 +9,7 @@
 ```python
 
 # Images store path
-IMAGES_STORE = 'path/to/same/images'
+IMAGES_STORE = 'path/to/save/images'
 
 ```   
 
