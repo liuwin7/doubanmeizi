@@ -6,36 +6,26 @@ import scrapy
 
 class DoubanSpider(scrapy.spiders.Spider):
     name = "douban"
-    allowed_domains = ["doubanmeinv.com"]
+    allowed_domains = ["doubanmeizi.com"]
     start_urls = [
-        "http://doubanmeinv.com/"
+        "http://www.doubanmeizi.com/"
     ]
 
     def parse(self, response):
-        for detail_path in response.xpath("//a[@target='_topic_detail']/@href"):
+        for detail_path in response.xpath("//a[@target='_blank']/@href"):
             yield scrapy.Request(response.urljoin(detail_path.extract()), callback=self.parse_page)
 
-        next_urls = response.xpath("//li[@class='next next_page']/a/@href").extract()
-        if len(next_urls) > 0:
-            for next_url in next_urls:
-                yield scrapy.Request(response.urljoin(next_url), callback=self.parse)
-        else:
-            next_urls = response.xpath("//ul[@class='pagination']/li")
-            next_page = ""
-            for next_url in next_urls:
-                if self.isCurrentPage(next_url.xpath("@class='thisclass'").extract()):
-                    next_page = "placeholder"
-                    continue
-                if next_page == "placeholder":
-                    next_page = next_url.xpath("a/@href").extract()[0]
-                    yield scrapy.Request(response.urljoin(next_page), callback=self.parse)
+        next_urls = response.xpath("//a[@class='nextpostslink']/@href").extract()
+        for next_url in next_urls:
+            yield scrapy.Request(response.urljoin(next_url), callback=self.parse)
 
     def parse_page(self, response):
-        for image in response.xpath("//div[@class='topic-figure cc']/img"):
+        print "Parse theme"
+        for image in response.xpath("//div[@id='picture']/p/img"):
             item = DoubanmeiziItem()
             item["desc"] = image.xpath("@alt").extract()[0]
             item["link"] = image.xpath("@src").extract()
-            item["title"] = image.xpath("@alt").extract()
+            item["title"] = image.xpath("@alt").extract()[0]
             item["image_urls"] = image.xpath("@src").extract()
             item["images"] = image.xpath("@src").extract()
             print item
