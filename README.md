@@ -14,4 +14,4 @@ IMAGES_STORE = 'path/to/same/images'
 ```   
 
 **使用如下命令，运行spider**  
-`scrapy crawl douban`
+`scrapy crawl douban`  
