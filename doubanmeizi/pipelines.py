@@ -11,8 +11,11 @@ from scrapy.exceptions import DropItem
 from scrapy.http import Request
 
 from ImageDatabaseItem import ImageDatabaseItem
+from DBManager import DBManager
 
 class DoubanmeiziPipeline(ImagesPipeline):
+
+    dbManager = DBManager("/Users/tropsci/Desktop/doubanImages/doubanmeizi.db")
 
     def get_media_requests(self, item, info):
         for image_url in item['image_urls']:
@@ -23,9 +26,16 @@ class DoubanmeiziPipeline(ImagesPipeline):
         if not image_paths:
             raise DropItem("Item contains no images")
         image_name = item["title"]
+        image_category_name = item['category']
+
         image_items = [x for ok, x in results if ok]
         for image_path_item in image_items:
             image_url = image_path_item["url"]
             image_path = image_path_item["path"]
             image_checksum = image_path_item["checksum"]
+            image_thumb_path = "thumb"
+
+            imageDatabaseItem = ImageDatabaseItem(image_name, image_url, image_path, image_thumb_path, image_checksum, image_category_name)
+            self.dbManager.insertDatabaseImageItem(imageDatabaseItem)
+
         return item
