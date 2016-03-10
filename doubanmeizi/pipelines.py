@@ -30,12 +30,13 @@ class DoubanmeiziPipeline(ImagesPipeline):
 
         image_items = [x for ok, x in results if ok]
         for image_path_item in image_items:
+            print("__________")
+            print(image_path_item)
             image_url = image_path_item["url"]
             image_path = image_path_item["path"]
             image_checksum = image_path_item["checksum"]
-            image_thumb_path = "thumb"
 
-            imageDatabaseItem = ImageDatabaseItem(image_name, image_url, image_path, image_thumb_path, image_checksum, image_category_name)
+            imageDatabaseItem = ImageDatabaseItem(image_name, image_url, image_path, image_checksum, image_category_name)
             self.dbManager.insertDatabaseImageItem(imageDatabaseItem)
 
         return item

@@ -12,9 +12,6 @@ class DoubanSpider(scrapy.spiders.Spider):
         "http://www.doubanmeizi.com/"
     ]
 
-    __category = "all"
-    __category_number = 0
-
     def parse(self, response):
 
         categories = []
@@ -24,7 +21,6 @@ class DoubanSpider(scrapy.spiders.Spider):
             category_name = url_path.split("/")[-2]
             categories.append((category_name, category_path))
 
-            print("*****************" + category_name)
             yield scrapy.Request(category_path, meta={'category': category_name}, callback=self.parse_category)
 
 
@@ -47,4 +43,4 @@ class DoubanSpider(scrapy.spiders.Spider):
             item["image_urls"] = image.xpath("@src").extract()
             item["images"] = image.xpath("@src").extract()
             item["category"] = category
-            return item
+            yield item
