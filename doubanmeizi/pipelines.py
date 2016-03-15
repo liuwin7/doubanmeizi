@@ -27,6 +27,8 @@ class DoubanmeiziPipeline(ImagesPipeline):
             raise DropItem("Item contains no images")
         image_name = item["title"]
         image_category_name = item['category']
+        image_width = item["width"]
+        image_height = item["height"]
 
         image_items = [x for ok, x in results if ok]
         for image_path_item in image_items:
@@ -36,7 +38,7 @@ class DoubanmeiziPipeline(ImagesPipeline):
             image_path = image_path_item["path"]
             image_checksum = image_path_item["checksum"]
 
-            imageDatabaseItem = ImageDatabaseItem(image_name, image_url, image_path, image_checksum, image_category_name)
+            imageDatabaseItem = ImageDatabaseItem(image_name, image_url, image_path, image_checksum, image_category_name, image_width, image_height)
             self.dbManager.insertDatabaseImageItem(imageDatabaseItem)
 
         return item
